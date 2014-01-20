@@ -128,6 +128,12 @@ IF(GATE_USE_ECAT7)
 ENDIF(GATE_USE_ECAT7)
 
 #=========================================================
+# Option for ITK use
+    ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/source/externals/itk ${PROJECT_BINARY_DIR}/externals/itk)
+    INCLUDE_DIRECTORIES(${ITK_INCLUDE_DIRS})
+    LINK_DIRECTORIES(${ITK_LIBRARY_DIRS})
+
+#=========================================================
 # Create configuration file
 CONFIGURE_FILE(GateConfiguration.h.in ${PROJECT_BINARY_DIR}/GateConfiguration.h)
 INCLUDE_DIRECTORIES(${PROJECT_BINARY_DIR})
@@ -141,11 +147,7 @@ INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}/source/geometry/include
   ${PROJECT_SOURCE_DIR}/source/physics/include
   ${PROJECT_SOURCE_DIR}/source/digits_hits/include
-  ${PROJECT_SOURCE_DIR}/source/general/include
-  ${PROJECT_SOURCE_DIR}/source/externals/itk/
-  ${PROJECT_SOURCE_DIR}/source/externals/itk/itkzlib
-  ${PROJECT_SOURCE_DIR}/source/externals/itk/MetaIO
-  ${PROJECT_BINARY_DIR}/externals/itk/)
+  ${PROJECT_SOURCE_DIR}/source/general/include)
 
 #=========================================================
 # Locate sources and headers for this project
@@ -174,11 +176,7 @@ ELSE(GATE_USE_GPU AND CUDA_FOUND)
   ADD_EXECUTABLE(Gate Gate.cc ${sources} ${headers})
 ENDIF(GATE_USE_GPU AND CUDA_FOUND)
 
-TARGET_LINK_LIBRARIES(Gate ${Geant4_LIBRARIES} ${ROOT_LIBRARIES} ${CLHEP_LIBRARIES} ${LIBXML2_LIBRARIES} ${LMF_LIBRARY} ${ECAT7_LIBRARY} ITKMetaIO itkzlib)
-
-#=========================================================
-# included ITK to read/write mhd image file format
-ADD_SUBDIRECTORY(source/externals/itk ${PROJECT_BINARY_DIR}/externals/itk)
+TARGET_LINK_LIBRARIES(Gate ${Geant4_LIBRARIES} ${ROOT_LIBRARIES} ${CLHEP_LIBRARIES} ${LIBXML2_LIBRARIES} ${LMF_LIBRARY} ${ECAT7_LIBRARY} ${ITK_LIBRARIES})
 
 #=========================================================
 INSTALL(TARGETS Gate DESTINATION bin)
