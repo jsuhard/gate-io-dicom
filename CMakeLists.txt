@@ -57,6 +57,10 @@ OPTION(GATE_ANALYSIS_USE_GENERAL "Gate use  G4ANALYSIS_USE_GENERAL (Recommanded)
 OPTION(GATE_ANALYSIS_USE_FILE "Gate use G4ANALYSIS_USE_FILE (Recommanded)" ON)
 OPTION(GATE_USE_SYSTEM_CLHEP "If 'ON', Gate does not use the standard CLHEP of GEANT4 (this is REQUIRED !)" ON)
 OPTION(GATE_USE_GPU "Gate use GPU (voxelized src and tracking), need CUDA " OFF)
+OPTION(GATE_USE_ITK "Gate use ITK for MetaImage support (Recommanded)" ON)
+MARK_AS_ADVANCED(GATE_USE_ITK) # MHD headers inclusion are hard-coded, if OFF: error missing headers
+OPTION(GATE_USE_SYSTEM_ITK "Use an installed version of ITK" OFF)
+MARK_AS_ADVANCED(GATE_USE_SYSTEM_ITK)
 
 #=========================================================
 # ROOT
@@ -129,9 +133,18 @@ ENDIF(GATE_USE_ECAT7)
 
 #=========================================================
 # Option for ITK use
+IF(GATE_USE_ITK)
+  IF(GATE_USE_SYSTEM_ITK)
+    FIND_PACKAGE(ITK REQUIRED ITKIOMeta)
+    INCLUDE(${ITK_USE_FILE})
+    #MESSAGE("-- Found ITK Version ${ITK_VERSION_MAJOR}.${ITK_VERSION_MINOR}.${ITK_VERSION_PATCH}")
+  ELSE(GATE_USE_SYSTEM_ITK)
     ADD_SUBDIRECTORY(${PROJECT_SOURCE_DIR}/source/externals/itk ${PROJECT_BINARY_DIR}/externals/itk)
     INCLUDE_DIRECTORIES(${ITK_INCLUDE_DIRS})
     LINK_DIRECTORIES(${ITK_LIBRARY_DIRS})
+  ENDIF(GATE_USE_SYSTEM_ITK)
+  #MESSAGE("Found ITK in ${ITK_INCLUDE_DIRS} ${ITK_LIBRARIES}")
+ENDIF(GATE_USE_ITK)
 
 #=========================================================
 # Create configuration file
