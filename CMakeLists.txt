@@ -142,10 +142,10 @@ INCLUDE_DIRECTORIES(
   ${PROJECT_SOURCE_DIR}/source/physics/include
   ${PROJECT_SOURCE_DIR}/source/digits_hits/include
   ${PROJECT_SOURCE_DIR}/source/general/include
-  ${PROJECT_SOURCE_DIR}/source/itk-mhd/
-  ${PROJECT_SOURCE_DIR}/source/itk-mhd/itkzlib
-  ${PROJECT_SOURCE_DIR}/source/itk-mhd/MetaIO
-  ${PROJECT_BINARY_DIR}/itk-mhd/)
+  ${PROJECT_SOURCE_DIR}/source/externals/itk/
+  ${PROJECT_SOURCE_DIR}/source/externals/itk/itkzlib
+  ${PROJECT_SOURCE_DIR}/source/externals/itk/MetaIO
+  ${PROJECT_BINARY_DIR}/externals/itk/)
 
 #=========================================================
 # Locate sources and headers for this project
@@ -178,7 +178,7 @@ TARGET_LINK_LIBRARIES(Gate ${Geant4_LIBRARIES} ${ROOT_LIBRARIES} ${CLHEP_LIBRARI
 
 #=========================================================
 # included ITK to read/write mhd image file format
-ADD_SUBDIRECTORY(source/itk-mhd ${PROJECT_BINARY_DIR}/itk-mhd)
+ADD_SUBDIRECTORY(source/externals/itk ${PROJECT_BINARY_DIR}/externals/itk)
 
 #=========================================================
 INSTALL(TARGETS Gate DESTINATION bin)
