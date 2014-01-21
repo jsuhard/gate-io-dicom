@@ -16,6 +16,10 @@ See GATE/LICENSE.txt for further details
 #ifndef __GATEMHDIMAGE_CC__
 #define __GATEMHDIMAGE_CC__
 
+#include "GateConfiguration.h"
+
+#ifdef GATE_USE_MHD
+
 #include "G4ThreeVector.hh"
 #include <iomanip>
 #include <sstream>
@@ -337,6 +341,7 @@ void GateMHDImage::WriteData_old(std::string filename, GateImage * image)
 }
 //-----------------------------------------------------------------------------
 
+#endif /* GATE_USE_MHD */
 
-#endif 
+#endif /* __GATEMHDIMAGE_CC__ */
 

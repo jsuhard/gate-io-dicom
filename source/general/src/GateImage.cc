@@ -23,7 +23,9 @@ See GATE/LICENSE.txt for further details
 #include "GateImage.hh"
 #include "GateMiscFunctions.hh"
 #include "GateMachine.hh"
+#ifdef GATE_USE_MHD
 #include "GateMHDImage.hh"
+#endif
 #include "GateInterfileHeader.hh"
 
 #ifdef G4ANALYSIS_USE_ROOT
@@ -1043,7 +1045,7 @@ void GateImage::ReadAnalyze(G4String filename) {
 
 //-----------------------------------------------------------------------------
 void GateImage::ReadMHD(G4String filename) {
-
+#ifdef GATE_USE_MHD
   // Read mhd image
   GateMHDImage * mhd = new GateMHDImage;
   mhd->ReadHeader(filename);
@@ -1067,6 +1069,9 @@ void GateImage::ReadMHD(G4String filename) {
 
   // Get image data
   mhd->ReadData(filename, data);
+#else
+    GateError( "Unable to process " << filename << " . GATE was not compiled with MetaImage support." << G4endl);
+#endif
 }
 //-----------------------------------------------------------------------------
 
@@ -1300,12 +1305,17 @@ void GateImage::WriteVox(std::ofstream & ) {
 
 //-----------------------------------------------------------------------------
 void GateImage::WriteMHD(std::string filename) {
+#ifdef GATE_USE_MHD
   GateMessage("Image",1,"GateImage::WriteMHD " << G4endl);
 
   // Write mhd image
   GateMHDImage * mhd = new GateMHDImage;
   mhd->WriteHeader(filename, this);
   mhd->WriteData(filename, this);
+
+#else
+    GateError( "Unable to process " << filename << " . GATE was not compiled with MetaImage support." << G4endl);
+#endif
 }
 //-----------------------------------------------------------------------------
 

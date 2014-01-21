@@ -58,7 +58,6 @@ OPTION(GATE_ANALYSIS_USE_FILE "Gate use G4ANALYSIS_USE_FILE (Recommanded)" ON)
 OPTION(GATE_USE_SYSTEM_CLHEP "If 'ON', Gate does not use the standard CLHEP of GEANT4 (this is REQUIRED !)" ON)
 OPTION(GATE_USE_GPU "Gate use GPU (voxelized src and tracking), need CUDA " OFF)
 OPTION(GATE_USE_ITK "Gate use ITK for MetaImage support (Recommanded)" ON)
-MARK_AS_ADVANCED(GATE_USE_ITK) # MHD headers inclusion are hard-coded, if OFF: error missing headers
 OPTION(GATE_USE_SYSTEM_ITK "Use an installed version of ITK" OFF)
 MARK_AS_ADVANCED(GATE_USE_SYSTEM_ITK)
 

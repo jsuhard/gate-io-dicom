@@ -11,6 +11,10 @@
 #ifndef __GATEMHDIMAGE_HH__
 #define __GATEMHDIMAGE_HH__
 
+#include "GateConfiguration.h"
+
+#ifdef GATE_USE_MHD
+
 #include "globals.hh"
 #include "G4ThreeVector.hh"
 #include <vector>
@@ -58,6 +62,6 @@ protected:
 
 };
 
-#endif 
+#endif /* GATE_USE_MHD */
 
-
+#endif /* __GATEMHDIMAGE_HH__ */
