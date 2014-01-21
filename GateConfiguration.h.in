@@ -28,6 +28,7 @@
 #endif
 
 #ifdef GATE_USE_ITK
+ #define GATE_USE_DICOM 1
  #define GATE_USE_MHD 1
 #endif
 
