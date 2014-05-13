@@ -1,6 +1,4 @@
 /*----------------------
-  GATE version name: gate_v6
-
   Copyright (C): OpenGATE Collaboration
 
   This software is distributed under the terms
@@ -117,10 +115,10 @@ GatePhysicsList::~GatePhysicsList()
   // delete the transportation process (should be done in ~G4VUserPhysicsList())
   bool isTransportationDelete = false;
   G4ParticleTable* theParticleTable = G4ParticleTable::GetParticleTable();
-  G4ParticleTable::G4PTblDicIterator * theParticleIterator = theParticleTable->GetIterator();
-  theParticleIterator->reset();
-  while( (*theParticleIterator)() ){//&& !isTransportationDelete){
-    G4ParticleDefinition* particle = theParticleIterator->value();
+  G4ParticleTable::G4PTblDicIterator * _theParticleIterator = theParticleTable->GetIterator(); 
+  _theParticleIterator->reset();
+  while( (*_theParticleIterator)() ){//&& !isTransportationDelete){
+    G4ParticleDefinition* particle = _theParticleIterator->value();
     G4ProcessVector * vect = particle->GetProcessManager()->GetProcessList();
     for(int i = 0; i<vect->size();i++)
       {
@@ -180,6 +178,9 @@ void GatePhysicsList::ConstructProcess()
   //   return;
   // }
 
+  GateMessage("Physic", 0, "WARNING: manual physic lists are being deprecated.\n"
+              << "Please, use physic list builder mechanism instead. Related documentation can be found at:\n"
+              << "http://wiki.opengatecollaboration.org/index.php/Users_Guide_V7.0:Setting_up_the_physics" << G4endl);
   if(mLoadState==0)
     {
       // AddTransportation(); // not set here. Set only if no physics list builder is used
@@ -474,16 +475,16 @@ void GatePhysicsList::Print(G4String name)
   G4ParticleTable* theParticleTable = G4ParticleTable::GetParticleTable();
   G4ProcessManager* manager = 0;
   G4ProcessVector * processvector = 0;
-  G4ParticleTable::G4PTblDicIterator * theParticleIterator;
+  G4ParticleTable::G4PTblDicIterator * _theParticleIterator; 
 
   int iDisp = 0;
 
   if(name=="All")
     {
-      theParticleIterator = theParticleTable->GetIterator();
-      theParticleIterator -> reset();
-      while( (*theParticleIterator)() ) {
-	particle = theParticleIterator->value();
+      _theParticleIterator = theParticleTable->GetIterator();
+      _theParticleIterator -> reset();
+      while( (*_theParticleIterator)() ) {
+	particle = _theParticleIterator->value();
 	manager  = particle->GetProcessManager();
 	processvector = manager->GetProcessList();
 	if(manager->GetProcessListLength()==0) continue;
@@ -643,7 +644,7 @@ void GatePhysicsList::Write(G4String file)
   G4ParticleTable* theParticleTable = G4ParticleTable::GetParticleTable();
   G4ProcessManager* manager = 0;
   G4ProcessVector * processvector = 0;
-  G4ParticleTable::G4PTblDicIterator * theParticleIterator;
+  G4ParticleTable::G4PTblDicIterator * _theParticleIterator; 
 
   int iDisp = 0;
 
@@ -654,10 +655,10 @@ void GatePhysicsList::Write(G4String file)
   os<<"List of particles with their associated processes\n\n";
   if(mLoadState<2)  os<<"<!> *** Warning *** <!>  Processes not yet initialized!\n\n";
 
-  theParticleIterator = theParticleTable->GetIterator();
-  theParticleIterator -> reset();
-  while( (*theParticleIterator)() ) {
-    particle = theParticleIterator->value();
+  _theParticleIterator = theParticleTable->GetIterator();
+  _theParticleIterator -> reset();
+  while( (*_theParticleIterator)() ) {
+    particle = _theParticleIterator->value();
     manager  = particle->GetProcessManager();
     processvector = manager->GetProcessList();
     if(manager->GetProcessListLength()==0) continue;
@@ -904,10 +905,10 @@ void GatePhysicsList::DefineCuts(G4VUserPhysicsList * phys)
   //DD(mListOfStepLimiter.size());
   if (mListOfStepLimiter.size()!=0) {
     G4ParticleTable* theParticleTable = G4ParticleTable::GetParticleTable();
-    G4ParticleTable::G4PTblDicIterator * theParticleIterator = theParticleTable->GetIterator();
-    theParticleIterator->reset();
-    while( (*theParticleIterator)() ){
-      G4ParticleDefinition* particle = theParticleIterator->value();
+    G4ParticleTable::G4PTblDicIterator * _theParticleIterator = theParticleTable->GetIterator(); 
+    _theParticleIterator->reset();
+    while( (*_theParticleIterator)() ){
+      G4ParticleDefinition* particle = _theParticleIterator->value();
       G4ProcessManager* pmanager = particle->GetProcessManager();
       G4String particleName = particle->GetParticleName();
       for(unsigned int i=0; i<mListOfStepLimiter.size(); i++) {
@@ -922,10 +923,10 @@ void GatePhysicsList::DefineCuts(G4VUserPhysicsList * phys)
   //DD(mListOfG4UserSpecialCut.size());
   if (mListOfG4UserSpecialCut.size()!=0) {
     G4ParticleTable* theParticleTable = G4ParticleTable::GetParticleTable();
-    G4ParticleTable::G4PTblDicIterator * theParticleIterator = theParticleTable->GetIterator();
-    theParticleIterator->reset();
-    while( (*theParticleIterator)() ){
-      G4ParticleDefinition* particle = theParticleIterator->value();
+    G4ParticleTable::G4PTblDicIterator * _theParticleIterator = theParticleTable->GetIterator(); 
+    _theParticleIterator->reset();
+    while( (*_theParticleIterator)() ){
+      G4ParticleDefinition* particle = _theParticleIterator->value();
       G4ProcessManager* pmanager = particle->GetProcessManager();
       G4String particleName = particle->GetParticleName();
       for(unsigned int i=0; i<mListOfG4UserSpecialCut.size(); i++) {

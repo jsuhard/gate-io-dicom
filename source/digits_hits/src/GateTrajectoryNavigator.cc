@@ -1,6 +1,4 @@
 /*----------------------
-  GATE version name: gate_v6
-
   Copyright (C): OpenGATE Collaboration
 
   This software is distributed under the terms
@@ -10,6 +8,7 @@
 
 #include "GateTrajectoryNavigator.hh"
 
+#include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4TrajectoryContainer.hh"
 #include "G4Trajectory.hh"

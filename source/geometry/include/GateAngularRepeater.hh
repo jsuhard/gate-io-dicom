@@ -1,6 +1,4 @@
 /*----------------------
-  GATE version name: gate_v6
-
   Copyright (C): OpenGATE Collaboration
 
   This software is distributed under the terms
@@ -17,6 +15,10 @@
 
 #include "GateVGlobalPlacement.hh"
 #include "G4Point3D.hh"
+
+#include "G4PhysicalConstants.hh"
+#include "G4SystemOfUnits.hh"
+
 #define ModuloMax 8
 
 class GateVVolume;
