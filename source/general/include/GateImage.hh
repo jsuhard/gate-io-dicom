@@ -188,6 +188,10 @@ public:
   void MergeDataByAddition(G4String filename);
   /// Displays info about the image to standard output
   void PrintInfo();
+    
+  void FlipByAxisX();
+  void FlipByAxisY();
+  void FlipByAxisZ();
 
   //-----------------------------------------------------------------------------
 protected:

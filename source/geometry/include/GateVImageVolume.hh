@@ -162,6 +162,10 @@ public:
   void SetBuildDistanceTransfoFilename(G4String filename);
   void SetLabeledImageFilename(G4String filename);
   void EnableBoundingBoxOnly(bool b);
+    
+  void FlipByAxisX(bool value = true){ mIsFlippedByAxisX = value; }
+  void FlipByAxisY(bool value = true){ mIsFlippedByAxisY = value; }
+  void FlipByAxisZ(bool value = true){ mIsFlippedByAxisZ = value; }
 
 protected:
 
@@ -239,6 +243,9 @@ protected:
 
   //-----------------------------------------------------------------------------
   bool mIsBoundingBoxOnlyModeEnabled;
+  bool mIsFlippedByAxisX;
+  bool mIsFlippedByAxisY;
+  bool mIsFlippedByAxisZ;
 };
 // EO class GateVImageVolume
 //-----------------------------------------------------------------------------

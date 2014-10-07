@@ -1619,4 +1619,72 @@ bool GateImage::HasSameResolutionThan(const GateImage * pImage) const {
 }
 //-----------------------------------------------------------------------------
 
+void GateImage::FlipByAxisX()
+{
+  const G4ThreeVector & size = GetResolution();
+  const unsigned int xSize = size.x();
+  const unsigned int ySize = size.y();
+  const unsigned int zSize = size.z();
+
+  for(unsigned int z = 0; z < zSize; z++) {
+    size_t slice = xSize * ySize * z;
+    for(unsigned int y = 0; y < ySize; y++) {
+      size_t row = slice + (xSize * y);
+      std::reverse(data.begin() + row, data.begin() + row + xSize);
+    }
+  }
+}
+
+void GateImage::FlipByAxisY()
+{
+  const G4ThreeVector & size = GetResolution();
+  const unsigned int xSize = size.x();
+  const unsigned int ySize = size.y();
+  const unsigned int zSize = size.z();
+  const unsigned int flipNumber = floor(ySize/2.0);
+  const unsigned int bufferSize = xSize;
+  
+  PixelType * buffer = new PixelType[bufferSize];
+  
+  for(unsigned int z = 0; z < zSize; z++) {
+    PixelType * slice = &data[0] + (xSize * ySize * z);
+    
+    for(unsigned int i = 0; i < flipNumber; i++) {
+      PixelType * firstPixel = slice + (xSize * i);
+      PixelType * firstPixelOpposite = firstPixel + (ySize - 2 * i - 1) * xSize;
+      
+      // memmove( void * destination, const void * source, size_t num )
+      memmove(buffer, firstPixel, bufferSize * sizeof(PixelType));
+      memmove(firstPixel, firstPixelOpposite, bufferSize * sizeof(PixelType));
+      memmove(firstPixelOpposite, buffer, bufferSize * sizeof(PixelType));
+      
+    }
+  }
+  
+  delete[] buffer;
+}
+
+void GateImage::FlipByAxisZ()
+{
+  const G4ThreeVector & size = GetResolution();
+  const unsigned int xSize = size.x();
+  const unsigned int ySize = size.y();
+  const unsigned int zSize = size.z();
+  const unsigned int flipNumber = floor(zSize/2.0);
+  const unsigned int bufferSize = xSize * ySize;
+  
+  PixelType * buffer = new PixelType[bufferSize];
+  
+  for(unsigned int i = 0; i < flipNumber; i++) {
+    PixelType * slice = &data[0] + (xSize * ySize * i);
+    PixelType * sliceOpposite = slice + (zSize - 2 * i - 1) * xSize * ySize;
+    
+    memmove(buffer, slice, bufferSize * sizeof(PixelType));
+    memmove(slice, sliceOpposite, bufferSize * sizeof(PixelType));
+    memmove(sliceOpposite, buffer, bufferSize * sizeof(PixelType));
+  }
+  
+  delete[] buffer;
+}
+
 #endif

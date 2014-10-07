@@ -51,6 +51,9 @@ GateVImageVolume::GateVImageVolume( const G4String& name,G4bool acceptsChildren,
   mHLabelImageFilename = "none";
   mIsBoundingBoxOnlyModeEnabled = false;
   mImageMaterialsFromHounsfieldTableDone = false;
+  mIsFlippedByAxisX = false;
+  mIsFlippedByAxisY = false;
+  mIsFlippedByAxisZ = false;
   GateMessageDec("Volume",5,"End GateVImageVolume("<<name<<")"<<G4endl);
 
   // do not display all voxels, only bounding box
@@ -277,6 +280,10 @@ void GateVImageVolume::LoadImage(bool add1VoxelMargin)
     this->GetVolumePlacement()->SetRotationAxis(axis);
   }
 
+  if (mIsFlippedByAxisX) { pImage->FlipByAxisX(); }
+  if (mIsFlippedByAxisY) { pImage->FlipByAxisY(); }
+  if (mIsFlippedByAxisZ) { pImage->FlipByAxisZ(); }
+    
   GateMessage("Volume",4,"voxel size" << pImage->GetVoxelSize() << G4endl);
   GateMessage("Volume",4,"origin" << GetOrigin() << G4endl);
   GateMessageDec("Volume",4,"End GateVImageVolume::LoadImage("<<mImageFilename<<")" << G4endl);

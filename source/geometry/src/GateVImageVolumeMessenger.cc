@@ -83,6 +83,28 @@ GateVImageVolumeMessenger::GateVImageVolumeMessenger(GateVImageVolume* volume)
   pDoNotBuildVoxelsCmd = 0;
   pDoNotBuildVoxelsCmd = new G4UIcmdWithABool(n,this);
   pDoNotBuildVoxelsCmd->SetGuidance("Only build the bounding box (no voxels !), for visualization purpose only.");
+
+  n = dir +"/flipByAxisX";
+  pFlipX = 0;
+  pFlipX = new G4UIcmdWithABool(n, this);
+  pFlipX->SetGuidance("Flip all voxels by X axis");
+  pFlipX->SetParameterName("value", true);
+  pFlipX->SetDefaultValue(true);
+    
+  n = dir +"/flipByAxisY";
+  pFlipY = 0;
+  pFlipY = new G4UIcmdWithABool(n, this);
+  pFlipY->SetGuidance("Flip all voxels by Y axis");
+  pFlipY->SetParameterName("value", true);
+  pFlipY->SetDefaultValue(true);
+
+  n = dir +"/flipByAxisZ";
+  pFlipZ = 0;
+  pFlipZ = new G4UIcmdWithABool(n, this);
+  pFlipZ->SetGuidance("Flip all voxels by Z axis");
+  pFlipZ->SetParameterName("value", true);
+  pFlipZ->SetDefaultValue(true);
+  
 }
 //---------------------------------------------------------------------------
 
@@ -101,6 +123,9 @@ GateVImageVolumeMessenger::~GateVImageVolumeMessenger()
   delete pSetOriginCmd;
   delete pBuildLabeledImageCmd;
   delete pDoNotBuildVoxelsCmd;
+  delete pFlipX;
+  delete pFlipY;
+  delete pFlipZ;
 }
 //---------------------------------------------------------------------------
 
@@ -137,6 +162,15 @@ void GateVImageVolumeMessenger::SetNewValue(G4UIcommand* command,
   }
   else if (command == pDoNotBuildVoxelsCmd) {
     pVImageVolume->EnableBoundingBoxOnly(pDoNotBuildVoxelsCmd->GetNewBoolValue(newValue));
+  }
+  else if (command == pFlipX) {
+    pVImageVolume->FlipByAxisX(pFlipX->GetNewBoolValue(newValue));
+  }
+  else if (command == pFlipY) {
+    pVImageVolume->FlipByAxisY(pFlipY->GetNewBoolValue(newValue));
+  }
+  else if (command == pFlipZ) {
+    pVImageVolume->FlipByAxisZ(pFlipZ->GetNewBoolValue(newValue));
   }
   // It is necessary to call GateVolumeMessenger::SetNewValue if the command
   // is not recognized

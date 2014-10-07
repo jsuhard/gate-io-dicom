@@ -52,6 +52,9 @@ private:
   G4UIcmdWithAString        * pBuildDistanceTransfoCmd;
   G4UIcmdWithAString        * pBuildLabeledImageCmd;
   G4UIcmdWithABool          * pDoNotBuildVoxelsCmd;
+  G4UIcmdWithABool          * pFlipX;
+  G4UIcmdWithABool          * pFlipY;
+  G4UIcmdWithABool          * pFlipZ;
 };
 //-----------------------------------------------------------------------------
 
