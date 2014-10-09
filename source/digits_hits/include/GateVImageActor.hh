@@ -59,6 +59,7 @@ public :
   //void SetPosition(GateVVolume * v);
   /// Sets the type of the hit
   void SetStepHitType(G4String t);
+  void SetColour(G4String colour);
   //-----------------------------------------------------------------------------
 
   double GetDoselVolume(){return mVoxelSize.x()*mVoxelSize.y()*mVoxelSize.z();}
@@ -99,6 +100,7 @@ protected:
   bool           mResolutionIsSet;
   bool           mHalfSizeIsSet;
   bool           mPositionIsSet;
+  G4String       mColour;
 
   int GetIndexFromTrackPosition(const GateVVolume *, const G4Track * track);
   int GetIndexFromStepPosition(const GateVVolume *, const G4Step  * step);

@@ -35,6 +35,7 @@ GateImageActorMessenger::~GateImageActorMessenger()
   delete pHalfSizeCmd;
   delete pSizeCmd;
   delete pPositionCmd;
+  delete pColourCmd;
 }
 //-----------------------------------------------------------------------------
 
@@ -83,6 +84,11 @@ void GateImageActorMessenger::BuildCommands(G4String base)
   guidance = G4String("Sets  hit type ('pre', 'post', 'random' or 'middle'). Default is 'middle'.");
   pStepHitTypeCmd->SetGuidance(guidance);
 
+  bb = base +"/vis/setColor";
+  pColourCmd = new G4UIcmdWithAString(bb,this);
+  guidance = G4String("Sets the color for visualizing purposes only.");
+  pColourCmd->SetGuidance(guidance);
+
 }
 //-----------------------------------------------------------------------------
 
@@ -94,6 +100,7 @@ void GateImageActorMessenger::SetNewValue(G4UIcommand* cmd, G4String newValue) {
   if (cmd == pSizeCmd)        pImageActor->SetSize(pSizeCmd->GetNew3VectorValue(newValue));
   if (cmd == pPositionCmd)    pImageActor->SetPosition(pPositionCmd->GetNew3VectorValue(newValue));
   if (cmd == pStepHitTypeCmd) pImageActor->SetStepHitType(newValue);
+  if (cmd == pColourCmd)      pImageActor->SetColour(newValue);
   GateActorMessenger::SetNewValue(cmd,newValue);
 }
 //-----------------------------------------------------------------------------

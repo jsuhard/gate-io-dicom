@@ -55,6 +55,7 @@ protected:
   G4UIcmdWith3VectorAndUnit * pHalfSizeCmd;
   G4UIcmdWith3VectorAndUnit * pSizeCmd;
   G4UIcmdWith3VectorAndUnit * pPositionCmd;
+  G4UIcmdWithAString        * pColourCmd;
 
 }; // end class GateImageActorMessenger
 //-----------------------------------------------------------------------------

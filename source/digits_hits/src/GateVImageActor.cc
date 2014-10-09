@@ -14,10 +14,12 @@
 #include "GateMiscFunctions.hh"
 #include "GateObjectStore.hh"
 #include "GateVImageVolume.hh"
+#include "GateModel.hh"
 
 #include <G4Step.hh>
 #include <G4TouchableHistory.hh>
 #include <G4VoxelLimits.hh>
+#include <G4VisManager.hh>
 
 //-----------------------------------------------------------------------------
 /// Constructor
@@ -220,6 +222,22 @@ void GateVImageActor::Construct()
 
   GateDebugMessageDec("Actor", 4, "GateVImageActor -- Construct: end" << G4endl);
 
+#ifdef G4VIS_USE
+    G4VisManager * pVisManager = dynamic_cast<G4VisManager *>(G4VVisManager::GetConcreteInstance());
+    if(pVisManager && mColour.length() > 0) {
+        G4Colour colour;
+        G4Colour::GetColour(mColour, colour);
+        G4VisAttributes * att = new G4VisAttributes;
+        att->SetColour(colour);
+        att->SetForceWireframe(true);
+
+        G4Translate3D * trans = new G4Translate3D(mVolume->GetPhysicalVolume()->GetObjectTranslation() + mPosition);
+
+        G4Box * pBoxSolid = new G4Box(GetObjectName(), mImage.GetHalfSize().x(), mImage.GetHalfSize().y(), mImage.GetHalfSize().z());
+        pVisManager->GetCurrentScene()->AddRunDurationModel(new GateModel(*pBoxSolid, *trans, *att, "Actors"));
+        pVisManager->NotifyHandlers();
+    }
+#endif
 }
 //-----------------------------------------------------------------------------
 
@@ -264,6 +282,13 @@ void GateVImageActor::SetStepHitType(G4String t)
   if (t == "random") { mStepHitType = RandomStepHitType; return; }
 
   GateError("GateVImageActor -- SetStepHitType: StepHitType is set to '" << t << "' while I only know 'pre', 'post', 'random' or 'middle'.");
+}
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+void GateVImageActor::SetColour(G4String colour)
+{
+    mColour = colour;
 }
 //-----------------------------------------------------------------------------
 
