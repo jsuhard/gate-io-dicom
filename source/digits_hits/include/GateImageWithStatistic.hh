@@ -49,6 +49,7 @@ class GateImageWithStatistic
   void SetScaleFactor(double s);
   void SetNormalizeToMax(bool b)      { mNormalizedToMax = b; mNormalizedToIntegral = !b; }
   void SetNormalizeToIntegral(bool b) { mNormalizedToMax = !b; mNormalizedToIntegral = b; }
+  void SetNormalizeByEvents(bool b) { mNormalizedByEvents = b; }
 
   void SetFilename(G4String f);
   void SaveData(int numberOfEvents, bool normalise=false);
@@ -75,6 +76,7 @@ class GateImageWithStatistic
   bool mOverWriteFilesFlag;
   bool mNormalizedToMax;
   bool mNormalizedToIntegral;
+  bool mNormalizedByEvents;
 
   bool mIsSquaredImageEnabled;
   bool mIsUncertaintyImageEnabled;

@@ -82,6 +82,16 @@ void GateDoseActor::EnableDoseNormalisationToIntegral(bool b) {
 }
 //-----------------------------------------------------------------------------
 
+
+//-----------------------------------------------------------------------------
+void GateDoseActor::EnableDoseNormalisationByEvents(bool b, double scaleFactor) {
+  mIsDoseNormalisationEnabled = b;
+  mDoseImage.SetNormalizeByEvents(b);
+  mDoseImage.SetScaleFactor(scaleFactor);
+}
+//-----------------------------------------------------------------------------
+
+
 //-----------------------------------------------------------------------------
 /// Construct
 void GateDoseActor::Construct() {

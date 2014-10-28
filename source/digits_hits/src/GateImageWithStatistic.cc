@@ -227,6 +227,7 @@ void GateImageWithStatistic::SaveData(int numberOfEvents, bool normalise) {
     }
     if (mNormalizedToMax) SetScaleFactor(factor*1.0/max);
     if (mNormalizedToIntegral) SetScaleFactor(factor*1.0/sum);
+    if (mNormalizedByEvents) SetScaleFactor(factor*1.0/(double) numberOfEvents);
   }
 
   GateMessage("Actor", 2, "Save " << mFilename << " with scaling = "

@@ -22,6 +22,7 @@ GateDoseActorMessenger::GateDoseActorMessenger(GateDoseActor* sensor)
   pEnableDoseCmd = 0;
   pEnableDoseNormToMaxCmd= 0;
   pEnableDoseNormToIntegralCmd= 0;
+  pEnableDoseNormByEventsCmd = 0;
   pEnableDoseSquaredCmd= 0;
   pEnableDoseUncertaintyCmd= 0;
   pEnableDoseToWaterCmd = 0;
@@ -51,6 +52,7 @@ GateDoseActorMessenger::~GateDoseActorMessenger()
   if(pEnableDoseCmd) delete pEnableDoseCmd;
   if(pEnableDoseNormToMaxCmd) delete pEnableDoseNormToMaxCmd;
   if(pEnableDoseNormToIntegralCmd) delete pEnableDoseNormToIntegralCmd;
+  if(pEnableDoseNormByEventsCmd) delete pEnableDoseNormByEventsCmd;
   if(pEnableDoseSquaredCmd) delete pEnableDoseSquaredCmd;
   if(pEnableDoseUncertaintyCmd) delete pEnableDoseUncertaintyCmd;
   if(pEnableDoseToWaterCmd) delete pEnableDoseToWaterCmd;
@@ -90,6 +92,13 @@ void GateDoseActorMessenger::BuildCommands(G4String base)
   pEnableDoseNormToIntegralCmd = new G4UIcmdWithABool(n, this);
   guid = G4String("Enable dose normalisation according to integral");
   pEnableDoseNormToIntegralCmd->SetGuidance(guid);
+
+  n = base+"/normaliseDoseByEvents";
+  pEnableDoseNormByEventsCmd = new G4UIcmdWithADouble(n, this);
+  guid = G4String("Enable dose normalisation by events then multiply by scaleFactor");
+  pEnableDoseNormByEventsCmd->SetGuidance(guid);
+  pEnableDoseNormByEventsCmd->SetParameterName("scaleFactor", true);
+  pEnableDoseNormByEventsCmd->SetDefaultValue(1.0);
 
   n = base+"/enableSquaredDose";
   pEnableDoseSquaredCmd = new G4UIcmdWithABool(n, this);
@@ -199,6 +208,7 @@ void GateDoseActorMessenger::SetNewValue(G4UIcommand* cmd, G4String newValue)
 
   if (cmd == pEnableDoseNormToMaxCmd) pDoseActor->EnableDoseNormalisationToMax(pEnableDoseNormToMaxCmd->GetNewBoolValue(newValue));
   if (cmd == pEnableDoseNormToIntegralCmd) pDoseActor->EnableDoseNormalisationToIntegral(pEnableDoseNormToIntegralCmd->GetNewBoolValue(newValue));
+  if (cmd == pEnableDoseNormByEventsCmd) pDoseActor->EnableDoseNormalisationByEvents(true, pEnableDoseNormByEventsCmd->GetNewDoubleValue(newValue));
   if (cmd == pEnableDoseToWaterNormCmd) pDoseActor->EnableDoseToWaterNormalisation(pEnableDoseToWaterNormCmd->GetNewBoolValue(newValue));
 
   if (cmd == pEnableRBE1AlphaCmd) pDoseActor->EnableRBE1AlphaImage(pEnableRBE1AlphaCmd->GetNewBoolValue(newValue));
