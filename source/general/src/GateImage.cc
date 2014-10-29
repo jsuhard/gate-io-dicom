@@ -742,8 +742,6 @@ void GateImage::UpdateSizesFromResolutionAndHalfSize() {
 		  -halfSize.z()+voxelSize.z()/2.0);
   lineSize = (int)lrint(resolution.x());
   planeSize = (int)lrint(resolution.x()*resolution.y());
-
-  PrintInfo();
 }
 //-----------------------------------------------------------------------------
 
@@ -770,8 +768,6 @@ void GateImage::UpdateSizesFromResolutionAndVoxelSize() {
 		  -halfSize.z()+voxelSize.z()/2.0);
   lineSize = (int)lrint(resolution.x());
   planeSize = (int)lrint(resolution.x()*resolution.y());
-
-  PrintInfo();
 }
 //-----------------------------------------------------------------------------
 
