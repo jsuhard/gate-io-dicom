@@ -54,4 +54,6 @@
 
 #cmakedefine GATE_USE_OPENGL               @GATE_USE_OPENGL@
 
+#define GATE_VERSION		     "7.0"
+
 #endif // GATE_CONFIGURATION_H
