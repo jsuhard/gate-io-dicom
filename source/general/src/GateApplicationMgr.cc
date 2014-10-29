@@ -426,9 +426,9 @@ void GateApplicationMgr::StartDAQ()
 
   if (!m_pauseFlag) {
     m_time = m_timeStart;
-    GateMessage("Geometry", 5, " Start SetTime in GateApplicationMgr before while");
+    GateMessage("Geometry", 5, " Start SetTime in GateApplicationMgr before while" << G4endl);
     theClock->SetTime(m_time);
-    GateMessage("Geometry", 5, " End SetTime in GateApplicationMgr before while");
+    GateMessage("Geometry", 5, " End SetTime in GateApplicationMgr before while" << G4endl);
   }
 
  /* if (m_timeSlice > m_timeStop - m_timeStart) {
