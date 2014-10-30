@@ -25,6 +25,9 @@ See GATE/LICENSE.txt for further details
 #include "GateMHDImage.hh"
 #endif
 #include "GateInterfileHeader.hh"
+#ifdef GATE_USE_DICOM
+#include "GateDICOMCT.hh"
+#endif
 
 #ifdef G4ANALYSIS_USE_ROOT
 #include "TFile.h"
@@ -793,9 +796,10 @@ void GateImage::Read(G4String filename) {
   else if (extension == "mhd" || extension == "mha") ReadMHD(filename);
   else if (extension == "h33") ReadInterfile(filename);
   else if (extension == "i33") ReadInterfile(filename);
+  else if (extension == "dcm") ReadDICOM(filename);
   else {
     GateError( "Unknow image file extension. Knowns extensions are : "
-         << G4endl << ".vox, .hdr, .img, .mhd, .mha, .h33, .i33" << G4endl);
+         << G4endl << ".vox, .hdr, .img, .mhd, .mha, .h33, .i33, .dcm" << G4endl);
     exit(0);
   }
 }
@@ -1100,6 +1104,38 @@ void GateImage::ReadInterfile(G4String filename) {
   // Get image data
   h33->ReadData(filename, data);
 
+}
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+void GateImage::ReadDICOM(G4String filename) {
+#ifdef GATE_USE_DICOM
+  GateDICOMCT * dicom = new GateDICOMCT;
+  dicom->Read(filename);
+  
+  resolution = G4ThreeVector(dicom->getXSize(), dicom->getYSize(), dicom->getZSize());
+  voxelSize = G4ThreeVector(dicom->getXSpacing(), dicom->getYSpacing(), dicom->getZSpacing());
+  /*
+   * Upper-left corner of the image
+   */
+  origin = G4ThreeVector(dicom->getXOrigin(), dicom->getYOrigin(), dicom->getZOrigin());
+  /*
+   * Set to Identity matrix by design, we do not want any rotation applied on the pixels.
+   * The Image Orientation matrix applied to the patient is stored in mDicomTags.
+   */
+  transformMatrix = G4RotationMatrix::IDENTITY;
+  
+  UpdateSizesFromResolutionAndVoxelSize();
+  Allocate();
+  
+  // Get image data
+  dicom->getPixels(data);
+  FlipByAxisY();
+  
+  delete dicom;
+#else
+  GateError( "Unable to process " << filename << " . GATE was not compiled with DICOM support." << G4endl);
+#endif
 }
 //-----------------------------------------------------------------------------
 

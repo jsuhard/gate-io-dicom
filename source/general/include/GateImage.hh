@@ -231,6 +231,7 @@ protected:
                                 std::string tag, std::string value);
   void ReadMHD(G4String filename);
   void ReadInterfile(G4String fileName);
+  void ReadDICOM(G4String filename);
 
   void WriteBin(std::ofstream & os);
   void WriteAscii(std::ofstream & os, const G4String & comment);
