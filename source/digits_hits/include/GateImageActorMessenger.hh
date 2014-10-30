@@ -24,6 +24,7 @@ See GATE/LICENSE.txt for further details
 #include "G4UIcmdWithAnInteger.hh"
 
 #include "GateActorMessenger.hh"
+#include "GateConfiguration.h"
 
 class GateVImageActor;
 
@@ -56,6 +57,9 @@ protected:
   G4UIcmdWith3VectorAndUnit * pSizeCmd;
   G4UIcmdWith3VectorAndUnit * pPositionCmd;
   G4UIcmdWithAString        * pColourCmd;
+#ifdef GATE_USE_DICOM
+    G4UIcmdWithAString        * pDicomLinkToCmd;
+#endif
 
 }; // end class GateImageActorMessenger
 //-----------------------------------------------------------------------------

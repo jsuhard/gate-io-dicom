@@ -15,6 +15,10 @@
 #include "GateObjectStore.hh"
 #include "GateVImageVolume.hh"
 #include "GateModel.hh"
+#include "GateConfiguration.h"
+#ifdef GATE_USE_DICOM
+#include "GateDICOMCTSlice.hh"
+#endif
 
 #include <G4Step.hh>
 #include <G4TouchableHistory.hh>
@@ -140,6 +144,20 @@ void GateVImageActor::Construct()
   GateDebugMessageInc("Actor", 4, "GateVImageActor -- Construct: begin" << G4endl);
   GateVActor::Construct();
 
+#ifdef GATE_USE_DICOM
+  if(!mDicomLinkToPath.empty()) {
+    GateDICOMCTSlice image;
+    if(image.Read(mDicomLinkToPath)) {
+      mDicomTags = image.getTags();
+    }
+  }else {
+    const GateVImageVolume * dicomVolume = dynamic_cast<GateVImageVolume*>(mVolume);
+    if(dicomVolume != NULL) {
+      mDicomTags = dicomVolume->GetImage()->getTags();
+    }
+  }
+#endif
+
   if (!mHalfSizeIsSet){
     mHalfSize = ComputeBoundingBox(mVolume->GetLogicalVolume()->GetSolid());
   }
@@ -219,6 +237,9 @@ void GateVImageActor::Construct()
   GateMessage("Actor", 3, "GateVImageActor -- Construct(): resol     = " << mResolution << G4endl);
   GateMessage("Actor", 3, "GateVImageActor -- Construct(): voxelsize = " << mVoxelSize << G4endl);
   GateMessage("Actor", 3, "GateVImageActor -- Construct(): hitType   = " << mStepHitTypeName << G4endl);
+#ifdef GATE_USE_DICOM
+  GateMessage("Actor", 3, "GateVImageActor -- Construct(): DICOM: " << G4endl << mDicomTags << G4endl);
+#endif
 
   GateDebugMessageDec("Actor", 4, "GateVImageActor -- Construct: end" << G4endl);
 
@@ -254,6 +275,10 @@ void GateVImageActor::SetOriginTransformAndFlagToImage(GateImageWithStatistic & 
 
   // Set Overwrite flag
   image.SetOverWriteFilesFlag(mOverWriteFilesFlag);
+
+#ifdef GATE_USE_DICOM
+  image.setTags(mDicomTags);
+#endif
 }
 //-----------------------------------------------------------------------------
 
@@ -267,6 +292,9 @@ void GateVImageActor::SetOriginTransformAndFlagToImage(GateImage & image)
   // Set transformMatrix
   image.SetTransformMatrix(mImage.GetTransformMatrix());
 
+#ifdef GATE_USE_DICOM
+  image.setTags(mDicomTags);
+#endif
 }
 //-----------------------------------------------------------------------------
 

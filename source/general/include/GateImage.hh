@@ -26,6 +26,9 @@
 #include "GateAnalyzeHeader.hh"
 #include "GateInterfileHeader.hh"
 #include "GateMessageManager.hh"
+#ifdef GATE_USE_DICOM
+#include "GateDICOMTags.hh"
+#endif
 
 class G4String;
 
@@ -192,6 +195,11 @@ public:
   void FlipByAxisX();
   void FlipByAxisY();
   void FlipByAxisZ();
+    
+#ifdef GATE_USE_DICOM
+  GateDICOMTags getTags() const { return mDicomTags; }
+  void          setTags(GateDICOMTags tags) { this->mDicomTags = tags; }
+#endif
 
   //-----------------------------------------------------------------------------
 protected:
@@ -216,6 +224,10 @@ protected:
 
   PixelType mOutsideValue;
 
+#ifdef GATE_USE_DICOM
+  GateDICOMTags mDicomTags;
+#endif
+  
   void ReadVox(G4String filename);
   void ReadAscii(G4String filename);
   void ReadVox2(std::ifstream & is);

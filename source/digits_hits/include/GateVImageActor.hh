@@ -60,6 +60,9 @@ public :
   /// Sets the type of the hit
   void SetStepHitType(G4String t);
   void SetColour(G4String colour);
+#ifdef GATE_USE_DICOM
+  void SetDicomLinkTo(G4String path) { this->mDicomLinkToPath = path; }
+#endif
   //-----------------------------------------------------------------------------
 
   double GetDoselVolume(){return mVoxelSize.x()*mVoxelSize.y()*mVoxelSize.z();}
@@ -104,6 +107,11 @@ protected:
 
   int GetIndexFromTrackPosition(const GateVVolume *, const G4Track * track);
   int GetIndexFromStepPosition(const GateVVolume *, const G4Step  * step);
+    
+#ifdef GATE_USE_DICOM
+  GateDICOMTags mDicomTags;
+  G4String      mDicomLinkToPath;
+#endif
 
 }; // end class GateVImageActor
 

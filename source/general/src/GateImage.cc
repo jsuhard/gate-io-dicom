@@ -1125,6 +1125,7 @@ void GateImage::ReadDICOM(G4String filename) {
    * The Image Orientation matrix applied to the patient is stored in mDicomTags.
    */
   transformMatrix = G4RotationMatrix::IDENTITY;
+  mDicomTags = dicom->getTags();
   
   UpdateSizesFromResolutionAndVoxelSize();
   Allocate();
@@ -1360,6 +1361,8 @@ void GateImage::WriteDICOM(G4String filename) {
   dicom.setXOrigin(GetOrigin().x());
   dicom.setYOrigin(GetOrigin().y());
   dicom.setZOrigin(GetOrigin().z());
+
+  dicom.setTags(getTags());
 
   FlipByAxisY();
   dicom.setPixels(data);

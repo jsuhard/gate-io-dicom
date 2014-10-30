@@ -368,4 +368,22 @@ void GateImageWithStatistic::UpdateUncertaintyImage(int numberOfEvents) {
 }
 //-----------------------------------------------------------------------------
 
+#ifdef GATE_USE_DICOM
+void GateImageWithStatistic::setTags(GateDICOMTags tags) {
+    mValueImage.setTags(tags);
+    if (mIsValuesMustBeScaled) {
+        mScaledValueImage.setTags(tags);
+        if (mIsSquaredImageEnabled) {
+            mScaledSquaredImage.setTags(tags);
+        }
+    }
+    if (mIsUncertaintyImageEnabled) {
+        mUncertaintyImage.setTags(tags);
+    }
+    if (mIsSquaredImageEnabled) {
+        mSquaredImage.setTags(tags);
+    }
+}
+#endif
+
 #endif /* end #define GATEIMAGEWITHSTATISTIC_CC */

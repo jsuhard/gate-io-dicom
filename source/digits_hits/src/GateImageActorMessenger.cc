@@ -36,6 +36,7 @@ GateImageActorMessenger::~GateImageActorMessenger()
   delete pSizeCmd;
   delete pPositionCmd;
   delete pColourCmd;
+  delete pDicomLinkToCmd;
 }
 //-----------------------------------------------------------------------------
 
@@ -89,6 +90,14 @@ void GateImageActorMessenger::BuildCommands(G4String base)
   guidance = G4String("Sets the color for visualizing purposes only.");
   pColourCmd->SetGuidance(guidance);
 
+  bb = base +"/dicom/linkTo";
+  pDicomLinkToCmd = new G4UIcmdWithAString(bb,this);
+#ifdef GATE_USE_DICOM
+  guidance = G4String("Links this image to another DICOM image.");
+#else
+  guidance = G4String("[DISABLED] Links this image to another DICOM image.");
+#endif
+  pDicomLinkToCmd->SetGuidance(guidance);
 }
 //-----------------------------------------------------------------------------
 
@@ -101,6 +110,13 @@ void GateImageActorMessenger::SetNewValue(G4UIcommand* cmd, G4String newValue) {
   if (cmd == pPositionCmd)    pImageActor->SetPosition(pPositionCmd->GetNew3VectorValue(newValue));
   if (cmd == pStepHitTypeCmd) pImageActor->SetStepHitType(newValue);
   if (cmd == pColourCmd)      pImageActor->SetColour(newValue);
+  if (cmd == pDicomLinkToCmd) {
+#ifdef GATE_USE_DICOM
+    pImageActor->SetDicomLinkTo(newValue);
+#else
+    GateError("GATE was not compiled with DICOM support.")
+#endif
+  }
   GateActorMessenger::SetNewValue(cmd,newValue);
 }
 //-----------------------------------------------------------------------------

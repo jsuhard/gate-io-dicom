@@ -65,6 +65,11 @@ class GateImageWithStatistic
   void SetOrigin(G4ThreeVector v);
   void SetOverWriteFilesFlag(bool b) { mOverWriteFilesFlag = b; }
   void SetTransformMatrix(const G4RotationMatrix & m);
+  
+#ifdef GATE_USE_DICOM
+  GateDICOMTags getTags() const { return mValueImage.getTags(); }
+  void          setTags(GateDICOMTags tags);
+#endif
 
   protected:
   GateImage mValueImage;
