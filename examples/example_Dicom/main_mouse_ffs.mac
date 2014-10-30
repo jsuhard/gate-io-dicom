@@ -1,0 +1,62 @@
+#===========
+#
+#
+#
+# FFS : Feet First-Supine
+# X direction is from the Right hand to the Left hand.
+# Y direction is from front to back (Anterior to Posterior).
+# Z direction is from Feet to Head.
+#
+
+#=============== VARIABLES ===================
+/control/alias IMAGE_PATH data/images/ffs/Souris1_TBI_0000.dcm
+/control/alias OUTPUT     mouse-ffs
+/control/alias AXES_SIZE  6
+#=============== VARIABLES ===================
+
+/control/execute mac/config.mac
+/control/execute mac/verbose.mac
+/control/execute mac/world.mac
+/control/execute mac/visu.mac
+
+/vis/set/colour 0 255 0 0.5
+/vis/scene/add/arrow 0 0 0 0 -{AXES_SIZE} 0 cm
+
+
+/control/execute mac/ct.mac
+
+#===========================================
+# ACTORS
+#===========================================
+/control/execute mac/doseactor.mac
+
+/gate/actor/addActor                        {DOSE_ACTOR} leg-left
+/gate/actor/leg-left/save                   {OUTPUT}-leg-left.{EXTENSION}
+/gate/actor/leg-left/attachTo               ct
+/gate/actor/leg-left/stepHitType            random
+/gate/actor/leg-left/setPosition            14 -3 -33 mm
+/gate/actor/leg-left/setResolution          100 200 300
+/gate/actor/leg-left/setSize                22 36 40 mm
+/gate/actor/leg-left/enableDose             true
+/gate/actor/leg-left/normaliseDoseByEvents {NORM_BY_EVENTS}
+/gate/actor/leg-left/saveEveryNSeconds      {SAVE_EVERY_N_SECONDS}
+/gate/actor/leg-left/vis/setColor           red
+
+/gate/actor/addActor                        {DOSE_ACTOR} leg-right
+/gate/actor/leg-right/save                  {OUTPUT}-leg-right.{EXTENSION}
+/gate/actor/leg-right/attachTo              ct
+/gate/actor/leg-right/stepHitType           random
+/gate/actor/leg-right/setPosition           -12 -3 -33 mm
+/gate/actor/leg-right/setResolution         100 200 300
+/gate/actor/leg-right/setSize               28 20 40 mm
+/gate/actor/leg-right/enableDose            true
+/gate/actor/leg-right/normaliseDoseByEvents {NORM_BY_EVENTS}
+/gate/actor/leg-right/saveEveryNSeconds     {SAVE_EVERY_N_SECONDS}
+/gate/actor/leg-right/vis/setColor          blue
+
+/control/alias BEAM_X -35
+/control/alias BEAM_Y -3
+/control/alias BEAM_Z -33
+/control/execute mac/beam.mac
+
+/control/execute mac/start.mac

@@ -1,0 +1,50 @@
+#===========
+#
+#
+#
+# HFS : Head First-Supine
+# X direction is from the Right hand to the Left hand.
+# Y direction is from front to back (Anterior to Posterior).
+# Z direction is from Feet to Head.
+#
+
+#=============== VARIABLES ===================
+/control/alias IMAGE_PATH data/images/hfs/CT.1.2.826.0.1.3680043.2.200.259546189.673.92804.233.3.dcm
+/control/alias OUTPUT     head-hfs
+/control/alias AXES_SIZE  40
+#=============== VARIABLES ===================
+
+/control/execute mac/config.mac
+/control/execute mac/verbose.mac
+/control/execute mac/world.mac
+/control/execute mac/visu.mac
+
+/vis/set/colour 0 255 0 0.5
+/vis/scene/add/arrow 0 0 0 0 -{AXES_SIZE} 0 cm
+
+
+/control/execute mac/ct.mac
+
+#===========================================
+# ACTORS
+#===========================================
+/control/execute mac/doseactor.mac
+
+/gate/actor/addActor                    {DOSE_ACTOR}  small
+/gate/actor/small/save                  {OUTPUT}-small.{EXTENSION}
+/gate/actor/small/attachTo              ct
+/gate/actor/small/stepHitType           random
+/gate/actor/small/setPosition           -15 -5 10 cm
+/gate/actor/small/setResolution         200 300 400
+/gate/actor/small/setSize               500 400 200 mm
+/gate/actor/small/enableDose            true
+/gate/actor/small/normaliseDoseByEvents {NORM_BY_EVENTS}
+/gate/actor/small/saveEveryNSeconds     {SAVE_EVERY_N_SECONDS}
+/gate/actor/small/vis/setColor          yellow
+
+/control/alias BEAM_X -300
+/control/alias BEAM_Y   70
+/control/alias BEAM_Z  100
+/control/execute mac/beam.mac
+
+/control/execute mac/start.mac

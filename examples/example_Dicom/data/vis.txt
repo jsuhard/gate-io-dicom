@@ -1,0 +1,3 @@
+-2000 -800 G4_Galactic
+-800 -40 Tungsten
+-40 19000 SpineBone

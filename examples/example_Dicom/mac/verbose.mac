@@ -1,0 +1,14 @@
+#===========================================
+# SET VERBOSITIES
+#===========================================
+/run/verbose              1
+/gate/verbose Actor       5
+/gate/verbose Volume      5
+/gate/verbose Step        0
+/gate/verbose Error       1
+/gate/verbose Warning     1
+/gate/verbose Output      0
+/gate/verbose Image       2
+/gate/verbose Geometry    7
+/gate/verbose Core        0
+/gate/verbose Acquisition 1

@@ -1,0 +1,30 @@
+#### Author:
+
+Jérôme Suhard
+jerome@suhard.fr
+October 2014
+
+#### Description:
+
+These macros show how to read DICOM CT and write DICOM RT DOSE.
+They have only a demonstration purpose of these cited functions and do not use realistic physics for fast results.
+Each macro represents a patient composed only of Tungsten in a world of Vacuum.
+Thus, the dose is only deposited on the patient.
+
+#### How to use:
+
+$ Gate main_head_hfs.mac
+$ Gate main_mouse_ffs.mac
+...
+
+#### How to edit:
+
+Commons macros are in the "mac" folder.
+Configuration can be edited in the mac/config.mac file, it defines a lot of variables used in the four simulations.
+Simulation speed (and thus accuracy) is controlled by the NUMBER_OF_PRIMARIES variable.
+
+#### Outputs:
+
+Each simulation produces :
+* one dose distribution of the entire CT,
+* one or two smallest dose distribution for showing spatial orientation according to original CT.

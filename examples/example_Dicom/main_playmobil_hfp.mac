@@ -1,0 +1,50 @@
+#===========
+#
+#
+#
+# HFP : Head First-Prone
+# X direction is from the Right hand to the Left hand.
+# Y direction is from front to back (Anterior to Posterior).
+# Z direction is from Feet to Head.
+#
+
+#=============== VARIABLES ===================
+/control/alias IMAGE_PATH data/images/hfp/CT.1.3.12.2.1107.5.1.4.11087.30000013101008163082800011197.dcm
+/control/alias OUTPUT     playmobil-hfp
+/control/alias AXES_SIZE  6
+#=============== VARIABLES ===================
+
+/control/execute mac/config.mac
+/control/execute mac/verbose.mac
+/control/execute mac/world.mac
+/control/execute mac/visu.mac
+
+/vis/set/colour 255 0 0 0.5
+/vis/scene/add/arrow 0 0 0 -{AXES_SIZE} 0 0 cm
+
+
+/control/execute mac/ct.mac
+
+#===========================================
+# ACTORS
+#===========================================
+/control/execute mac/doseactor.mac
+
+/gate/actor/addActor                   {DOSE_ACTOR} head
+/gate/actor/head/save                  {OUTPUT}-head.{EXTENSION}
+/gate/actor/head/attachTo              ct
+/gate/actor/head/stepHitType           random
+/gate/actor/head/setPosition           6 -3 15 mm
+/gate/actor/head/setResolution         100 200 300
+/gate/actor/head/setSize               40 38 55 mm
+/gate/actor/head/enableDose            true
+/gate/actor/head/normaliseDoseByEvents {NORM_BY_EVENTS}
+/gate/actor/head/saveEveryNSeconds     {SAVE_EVERY_N_SECONDS}
+/gate/actor/head/vis/setColor          blue
+
+/control/alias BEAM_X -45
+/control/alias BEAM_Y -3
+/control/alias BEAM_Z 15
+/control/execute mac/beam.mac
+
+/control/execute mac/start.mac

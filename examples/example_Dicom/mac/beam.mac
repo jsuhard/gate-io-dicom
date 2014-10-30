@@ -1,0 +1,22 @@
+#=====================================================
+# BEAMS
+#=====================================================
+#
+# INPUTS: BEAM_X BEAM_Y BEAM_Z
+# position in mm of the center of the beam
+# OUTPUT: /gate/source/beam/*
+#
+#=====================================================
+/gate/source/addSource           beam  gps
+/gate/source/beam/gps/particle   gamma
+/gate/source/beam/gps/energytype Mono
+/gate/source/beam/gps/monoenergy 2000 keV
+/gate/source/beam/gps/type       Point
+/gate/source/beam/gps/centre     {BEAM_X} {BEAM_Y} {BEAM_Z} mm
+/gate/source/beam/gps/mintheta   0 deg
+/gate/source/beam/gps/maxtheta   20 deg
+/gate/source/beam/gps/ang/type   iso
+/gate/source/beam/gps/ang/rot1   0 1 0
+/gate/source/beam/gps/ang/rot2   0 0 -1
+/gate/source/beam/gps/pos/rot1   1 0 0
+/gate/source/beam/gps/pos/rot2   0 0 1

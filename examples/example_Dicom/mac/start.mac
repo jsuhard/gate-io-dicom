@@ -1,0 +1,8 @@
+#=====================================================
+# INITIALISATION
+#=====================================================
+/gate/physics/addPhysicsList empenelope
+/gate/run/initialize
+/gate/random/setEngineSeed auto
+/gate/application/setTotalNumberOfPrimaries {NUMBER_OF_PRIMARIES}
+/gate/application/start

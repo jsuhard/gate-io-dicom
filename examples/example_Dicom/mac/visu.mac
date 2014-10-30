@@ -1,0 +1,10 @@
+#===========================================
+# VISU 
+#===========================================
+/vis/open OGLI
+/vis/drawVolume
+/vis/scene/add/trajectories
+/vis/viewer/zoom 4
+/vis/viewer/set/hiddenMarker 1
+/vis/scene/add/axes 0 0 0 {AXES_SIZE} cm
+/vis/scene/endOfEventAction accumulate

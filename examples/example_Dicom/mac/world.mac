@@ -1,0 +1,10 @@
+#===========================================
+# MATERIALS 
+#===========================================
+/gate/geometry/setMaterialDatabase GateMaterials.db
+
+#===========================================
+# WORLD 
+#===========================================
+/gate/world/setMaterial G4_AIR
+/gate/world/vis/setVisible 0

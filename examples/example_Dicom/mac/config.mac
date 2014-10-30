@@ -1,0 +1,10 @@
+/control/alias NUMBER_OF_PRIMARIES  1e5
+/control/alias HU_MATERIAL          data/vis.txt
+/control/alias EXTENSION            dcm
+/control/alias IMAGE_VOLUME_TYPE    ImageNestedParametrisedVolume
+/control/alias DOSE_ACTOR           DoseActor
+/control/alias SAVE_EVERY_N_MINUTES 10
+
+
+/control/multiply NORM_BY_EVENTS       5e5 {NUMBER_OF_PRIMARIES}
+/control/multiply SAVE_EVERY_N_SECONDS 60 {SAVE_EVERY_N_MINUTES}

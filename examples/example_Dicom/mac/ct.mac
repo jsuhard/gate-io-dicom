@@ -1,0 +1,16 @@
+#===========================================
+# IMAGE
+#===========================================
+#
+# INPUT: IMAGE_PATH
+# OUTPUT: /gate/ct/*
+#
+#===========================================
+/gate/world/daughters/name            ct
+/gate/world/daughters/insert          {IMAGE_VOLUME_TYPE}
+/gate/ct/setMaterial                  Air
+#/gate/ct/geometry/flipByAxisX
+#/gate/ct/geometry/flipByAxisY
+#/gate/ct/geometry/flipByAxisZ
+/gate/ct/geometry/setHUToMaterialFile {HU_MATERIAL}
+/gate/ct/geometry/setImage            {IMAGE_PATH}

@@ -1,0 +1,8 @@
+/gate/actor/addActor                {DOSE_ACTOR} dose
+/gate/actor/dose/save               {OUTPUT}.{EXTENSION}
+/gate/actor/dose/attachTo           ct
+/gate/actor/dose/stepHitType        random
+/gate/actor/dose/setResolution      100 100 100
+/gate/actor/dose/enableDose         true
+/gate/actor/dose/saveEveryNSeconds  {SAVE_EVERY_N_SECONDS}
+/gate/actor/dose/normaliseDoseByEvents {NORM_BY_EVENTS}
