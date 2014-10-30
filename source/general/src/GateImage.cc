@@ -43,6 +43,7 @@ GateImage::GateImage() {
   resolution = G4ThreeVector(0.0, 0.0, 0.0);
   mPosition = G4ThreeVector(0.0, 0.0, 0.0);
   origin = G4ThreeVector(0.0, 0.0, 0.0);
+  axisDirections = G4ThreeVector(1.0,1.0,1.0);
   UpdateSizesFromResolutionAndHalfSize();
   mOutsideValue = 0;
   kCarTolerance = G4GeometryTolerance::GetInstance()->GetSurfaceTolerance();
@@ -1126,6 +1127,22 @@ void GateImage::ReadDICOM(G4String filename) {
    */
   transformMatrix = G4RotationMatrix::IDENTITY;
   mDicomTags = dicom->getTags();
+  /*
+   * Conversion of DICOM axes which are patient centric to GATE axes.
+   * X direction is from the right hand to the left hand of the patient.
+   * Y direction is from Anterior to Posterior.
+   * Z direction is from Feet to Head.
+   */
+  std::vector<float> imageOrientationPatient = mDicomTags.getImageOrientationPatient();
+  G4ThreeVector row_x = G4ThreeVector(imageOrientationPatient[0], imageOrientationPatient[1], imageOrientationPatient[2]);
+  G4ThreeVector row_y = G4ThreeVector(imageOrientationPatient[3], imageOrientationPatient[4], imageOrientationPatient[5]);
+  G4ThreeVector row_z = row_x.cross(row_y);
+  G4RotationMatrix rot;
+  rot.setRows(row_x, row_y, row_z);
+  /*
+   * The calculated Y axis is inversed compared to GATE one.
+   */
+  axisDirections = G4ThreeVector(1.0 * rot.xx(), - 1.0 * rot.yy(), 1.0 * rot.zz());
   
   UpdateSizesFromResolutionAndVoxelSize();
   Allocate();

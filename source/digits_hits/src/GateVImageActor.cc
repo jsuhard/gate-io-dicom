@@ -225,21 +225,26 @@ void GateVImageActor::Construct()
   mOrigin[1] = - (size[1]/2.0 - mHalfSize.y());
   mOrigin[2] = size[2]/2.0 - mHalfSize.z();
 
-  // Take origin into account, consider halfpixel
-  mOrigin[0] = mVolume->GetOrigin().x()+mOrigin[0];
-  mOrigin[1] = mVolume->GetOrigin().y()+mOrigin[1];
-  mOrigin[2] = mVolume->GetOrigin().z()+mOrigin[2];
-
-  // Take translation into account
-  mOrigin = mOrigin + mPosition;
-  mImage.SetOrigin(mOrigin);
+  G4ThreeVector axisDirections = G4ThreeVector(1,1,1);
 
   // Copy rotation matrix from attached image, if the attached volume
   // is a GateVImageVolume
   if (dynamic_cast<GateVImageVolume*>(mVolume) != 0) {
     GateVImageVolume * volAsImage = (GateVImageVolume*)mVolume;
     mImage.SetTransformMatrix(volAsImage->GetTransformMatrix());
+    axisDirections = volAsImage->GetImage()->GetAxisDirections();
   }
+
+  // Take origin into account, consider halfpixel
+  mOrigin[0] = mVolume->GetOrigin().x() + axisDirections[0] * mOrigin[0];
+  mOrigin[1] = mVolume->GetOrigin().y() + axisDirections[1] * mOrigin[1];
+  mOrigin[2] = mVolume->GetOrigin().z() + axisDirections[2] * mOrigin[2];
+
+  // Take translation into account
+  mOrigin[0] = mOrigin[0] + axisDirections[0] * mPosition[0];
+  mOrigin[1] = mOrigin[1] + axisDirections[1] * mPosition[1];
+  mOrigin[2] = mOrigin[2] + axisDirections[2] * mPosition[2];
+  mImage.SetOrigin(mOrigin);
 
   // DEBUG
   GateMessage("Actor", 3, "GateVImageActor -- Construct: position of parent = " <<mVolume->GetPhysicalVolume()->GetObjectTranslation()  << G4endl);

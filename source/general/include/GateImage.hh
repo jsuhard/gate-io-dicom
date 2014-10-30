@@ -87,6 +87,8 @@ public:
   const G4RotationMatrix & GetTransformMatrix() const { return transformMatrix; }
   inline void SetTransformMatrix(const G4RotationMatrix &transMatrix) { transformMatrix = transMatrix; }
 
+  inline G4ThreeVector GetAxisDirections() const { return axisDirections; }
+
   bool HasSameResolutionThan(const GateImage & image) const;
   bool HasSameResolutionThan(const GateImage * pImage) const;
 
@@ -221,6 +223,8 @@ protected:
   G4int                          m_voxelNx;
   G4int                          m_voxelNy;
   G4int                          m_voxelNz;
+
+  G4ThreeVector axisDirections;
 
   PixelType mOutsideValue;
 
