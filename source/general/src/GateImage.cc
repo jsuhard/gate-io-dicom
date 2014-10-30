@@ -27,6 +27,7 @@ See GATE/LICENSE.txt for further details
 #include "GateInterfileHeader.hh"
 #ifdef GATE_USE_DICOM
 #include "GateDICOMCT.hh"
+#include "GateDICOMRTDose.hh"
 #endif
 
 #ifdef G4ANALYSIS_USE_ROOT
@@ -1263,24 +1264,18 @@ void GateImage::Write(G4String filename, const G4String & comment) {
     // open
     OpenFileOutput(filename, os);
     WriteBin(os);
-  }
-  else {
-    if (extension == "vox") {
+  }else if (extension == "vox"){
       // open
       OpenFileOutput(filename, os);
       WriteVox(os);
-    }
-    else {
-      if (extension == "txt") {
+  }else if (extension == "txt") {
 	// open
 	GateMessage("Actor",5,"Write text file"<< G4endl);
 	OpenFileOutput(filename, os);
 	GateMessage("Actor",5,"Write text file"<< G4endl);
 	WriteAscii(os, comment);
 	GateMessage("Actor",5,"Write text file - end " << G4endl);
-      }
-      else {
-	if (extension == "hdr") {
+  }else if (extension == "hdr") {
 	  // Header
 	  GateAnalyzeHeader hdr;
 	  hdr.SetVoxelType(GateAnalyzeHeader::FloatType);
@@ -1294,27 +1289,19 @@ void GateImage::Write(G4String filename, const G4String & comment) {
 	  // open
 	  OpenFileOutput(filename, os);
 	  WriteBin(os);
-	}
-        else {
-          if (extension == "mhd" || extension == "mha") {
-            WriteMHD(filename);
-          }
-          else {
-            if (extension == "root") {
-              WriteRoot(filename);
-            }
-            else {
-              GateMessage("Image",0,"WARNING : Don't know how to write '" << extension
-                          << " format... I try ASCII file" << G4endl);
-              // open
-              OpenFileOutput(filename, os);
-              WriteAscii(os, comment);
-            }
-          }
-        }
-      }
-    }
+  }else if (extension == "mhd" || extension == "mha") {
+    WriteMHD(filename);
+  }else if (extension == "dcm") {
+    WriteDICOM(filename);
+  }else if (extension == "root") {
+    WriteRoot(filename);
+  }else {
+    GateWarning("Don't know how to write '" << extension << " format... I try ASCII file" << G4endl);
+    // open
+    OpenFileOutput(filename, os);
+    WriteAscii(os, comment);
   }
+
   os.close();
 }
 //-----------------------------------------------------------------------------
@@ -1351,6 +1338,36 @@ void GateImage::WriteMHD(std::string filename) {
 
 #else
     GateError( "Unable to process " << filename << " . GATE was not compiled with MetaImage support." << G4endl);
+#endif
+}
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+void GateImage::WriteDICOM(G4String filename) {
+#ifdef GATE_USE_DICOM
+  GateMessage("Image",1,"GateImage::WriteDICOM " << filename << G4endl);
+
+  GateDICOMRTDose dicom;
+
+  dicom.setXSize(GetResolution().x());
+  dicom.setYSize(GetResolution().y());
+  dicom.setZSize(GetResolution().z());
+
+  dicom.setXSpacing(GetVoxelSize().x());
+  dicom.setYSpacing(GetVoxelSize().y());
+  dicom.setZSpacing(GetVoxelSize().z());
+
+  dicom.setXOrigin(GetOrigin().x());
+  dicom.setYOrigin(GetOrigin().y());
+  dicom.setZOrigin(GetOrigin().z());
+
+  FlipByAxisY();
+  dicom.setPixels(data);
+  FlipByAxisY();
+
+  dicom.Write(filename);
+#else
+  GateError( "Unable to process " << filename << " . GATE was not compiled with DICOM support." << G4endl);
 #endif
 }
 //-----------------------------------------------------------------------------

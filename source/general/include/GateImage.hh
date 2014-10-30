@@ -239,6 +239,7 @@ protected:
   void WriteAnalyzeHeader(G4String filename);
   void WriteRoot(G4String filename);
   void WriteMHD(std::string filename);
+  void WriteDICOM(G4String filename);
 
   void UpdateNumberOfValues();
   void UpdateSizesFromResolutionAndHalfSize();
