@@ -207,9 +207,22 @@ void GateVImageActor::Construct()
   mVolume->GetLogicalVolume()->GetSolid()->CalculateExtent(kZAxis, limits, origin, min, max);
   size[2] = max-min;
 
-  // Translation between actor's size and mothervolume's size
+  /*
+   * Translation between actor's size and mothervolume's size
+   * GATE axes:
+   *      y
+   * °    ↑
+   *   ¤  ↑
+   *       →→ x
+   *
+   * Where ° is the top-left pixel a.k.a origin of the CT
+   * and   ¤ is the top-left pixel of the actor.
+   * When the actor is smaller than the mother volume,
+   * the origin is increasing along the X axis
+   * BUT is decreasing along the Y axis.
+   */
   mOrigin[0] = size[0]/2.0 - mHalfSize.x();
-  mOrigin[1] = size[1]/2.0 - mHalfSize.y();
+  mOrigin[1] = - (size[1]/2.0 - mHalfSize.y());
   mOrigin[2] = size[2]/2.0 - mHalfSize.z();
 
   // Take origin into account, consider halfpixel
